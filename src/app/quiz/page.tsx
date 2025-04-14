@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 
@@ -11,7 +11,7 @@ interface Question {
   correctAnswer: string;
 }
 
-export default function Quiz() {
+function QuizContent() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -111,5 +111,19 @@ export default function Quiz() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Quiz() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+          <div className="text-2xl">Carregando...</div>
+        </div>
+      }
+    >
+      <QuizContent />
+    </Suspense>
   );
 }
