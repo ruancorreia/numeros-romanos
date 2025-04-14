@@ -8,6 +8,15 @@ if (!MONGODB_URI) {
   );
 }
 
+interface CachedConnection {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+declare global {
+  var mongoose: CachedConnection;
+}
+
 let cached = global.mongoose;
 
 if (!cached) {
